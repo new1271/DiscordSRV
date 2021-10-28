@@ -40,21 +40,29 @@ public class DiscordAccountLinkListener extends ListenerAdapter {
     @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
         // don't process messages sent by the bot
-        if (event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) return;
+        if (event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId()))
+            return;
 
-        DiscordSRV.api.callEvent(new DiscordPrivateMessageReceivedEvent(event));
-
-        String reply = DiscordSRV.getPlugin().getAccountLinkManager().process(event.getMessage().getContentRaw(), event.getAuthor().getId());
-        if (reply != null) event.getChannel().sendMessage(reply).queue();
+        DiscordPrivateMessageReceivedEvent eventP = new DiscordPrivateMessageReceivedEvent(event);
+        DiscordSRV.api.callEvent(eventP);
+        if (!eventP.isCancelled()) {
+            String reply = DiscordSRV.getPlugin().getAccountLinkManager().process(event.getMessage().getContentRaw(),
+                    event.getAuthor().getId());
+            if (reply != null)
+                event.getChannel().sendMessage(reply).queue();
+        }
     }
 
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         // add linked role and nickname back to people when they rejoin the server
         UUID uuid = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getUser().getId());
         if (uuid != null) {
-            Role roleToAdd = DiscordUtil.resolveRole(DiscordSRV.config().getString("MinecraftDiscordAccountLinkedRoleNameToAddUserTo"));
-            if (roleToAdd != null) DiscordUtil.addRoleToMember(event.getMember(), roleToAdd);
-            else DiscordSRV.debug(Debug.GROUP_SYNC, "Couldn't add user to null role");
+            Role roleToAdd = DiscordUtil
+                    .resolveRole(DiscordSRV.config().getString("MinecraftDiscordAccountLinkedRoleNameToAddUserTo"));
+            if (roleToAdd != null)
+                DiscordUtil.addRoleToMember(event.getMember(), roleToAdd);
+            else
+                DiscordSRV.debug(Debug.GROUP_SYNC, "Couldn't add user to null role");
 
             if (DiscordSRV.config().getBoolean("NicknameSynchronizationEnabled")) {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);

@@ -23,6 +23,7 @@
 package github.scarsz.discordsrv.api.events;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -33,6 +34,7 @@ import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
  */
 public class DiscordPrivateMessageReceivedEvent extends DiscordEvent<PrivateMessageReceivedEvent> {
 
+    @Getter @Setter private boolean cancelled;
     @Getter private final User author;
     @Getter private final PrivateChannel channel;
     @Getter private final Message message;
