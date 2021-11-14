@@ -33,6 +33,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 public class DiscordAccountLinkListener extends ListenerAdapter {
@@ -54,21 +55,24 @@ public class DiscordAccountLinkListener extends ListenerAdapter {
     }
 
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        // add linked role and nickname back to people when they rejoin the server
-        UUID uuid = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getUser().getId());
-        if (uuid != null) {
-            Role roleToAdd = DiscordUtil
-                    .resolveRole(DiscordSRV.config().getString("MinecraftDiscordAccountLinkedRoleNameToAddUserTo"));
-            if (roleToAdd != null)
-                DiscordUtil.addRoleToMember(event.getMember(), roleToAdd);
-            else
-                DiscordSRV.debug(Debug.GROUP_SYNC, "Couldn't add user to null role");
+        Arrays.stream(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getUser().getId())
+                .map(left -> new UUID[] { left }, right -> new UUID[] { right.javaID, right.bedrockID }))
+                .forEach(uuid -> {
+                    // add linked role and nickname back to people when they rejoin the server
+                    if (uuid != null) {
+                        Role roleToAdd = DiscordUtil.resolveRole(
+                                DiscordSRV.config().getString("MinecraftDiscordAccountLinkedRoleNameToAddUserTo"));
+                        if (roleToAdd != null)
+                            DiscordUtil.addRoleToMember(event.getMember(), roleToAdd);
+                        else
+                            DiscordSRV.debug(Debug.GROUP_SYNC, "Couldn't add user to null role");
 
-            if (DiscordSRV.config().getBoolean("NicknameSynchronizationEnabled")) {
-                OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-                DiscordSRV.getPlugin().getNicknameUpdater().setNickname(event.getMember(), player);
-            }
-        }
+                        if (DiscordSRV.config().getBoolean("NicknameSynchronizationEnabled")) {
+                            OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+                            DiscordSRV.getPlugin().getNicknameUpdater().setNickname(event.getMember(), player);
+                        }
+                    }
+                });
     }
 
 }

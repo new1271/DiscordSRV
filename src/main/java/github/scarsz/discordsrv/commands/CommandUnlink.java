@@ -44,10 +44,8 @@ import static github.scarsz.discordsrv.commands.CommandLinked.*;
 
 public class CommandUnlink {
 
-    @Command(commandNames = { "unlink", "clearlinked" },
-            helpMessage = "Unlinks your Minecraft account from your Discord account",
-            permission = "discordsrv.unlink"
-    )
+    @Command(commandNames = { "unlink",
+            "clearlinked" }, helpMessage = "Unlinks your Minecraft account from your Discord account", permission = "discordsrv.unlink")
     public static void execute(CommandSender sender, String[] args) {
         Bukkit.getScheduler().runTaskAsynchronously(DiscordSRV.getPlugin(), () -> executeAsync(sender, args));
     }
@@ -55,7 +53,8 @@ public class CommandUnlink {
     private static void executeAsync(CommandSender sender, String[] args) {
         if (args.length == 0) {
             if (!(sender instanceof Player)) {
-                MessageUtil.sendMessage(sender, ChatColor.RED + LangUtil.InternalMessage.NO_UNLINK_TARGET_SPECIFIED.toString());
+                MessageUtil.sendMessage(sender,
+                        ChatColor.RED + LangUtil.InternalMessage.NO_UNLINK_TARGET_SPECIFIED.toString());
                 return;
             }
 
@@ -93,31 +92,35 @@ public class CommandUnlink {
                     notifyUnlinked(sender);
                 }
                 return;
-            } else if (args.length == 1 && DiscordUtil.getUserById(target) != null ||
-                    (StringUtils.isNumeric(target) && target.length() >= 17 && target.length() <= 20)) {
+            } else if (args.length == 1 && DiscordUtil.getUserById(target) != null
+                    || (StringUtils.isNumeric(target) && target.length() >= 17 && target.length() <= 20)) {
                 // target is a Discord ID
                 notifyInterpret(sender, "Discord ID");
-                UUID uuid = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(target);
-                notifyPlayer(sender, uuid != null ? Bukkit.getOfflinePlayer(uuid) : null);
-                notifyDiscord(sender, target);
-                if (uuid != null) {
-                    DiscordSRV.getPlugin().getAccountLinkManager().unlink(uuid);
-                    notifyUnlinked(sender);
-                }
+                Arrays.stream(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(target)
+                        .map(left -> new UUID[] { left }, right -> new UUID[] { right.javaID, right.bedrockID }))
+                        .forEach(uuid -> {
+                            notifyPlayer(sender, uuid != null ? Bukkit.getOfflinePlayer(uuid) : null);
+                            notifyDiscord(sender, target);
+                            if (uuid != null) {
+                                DiscordSRV.getPlugin().getAccountLinkManager().unlink(uuid);
+                                notifyUnlinked(sender);
+                            }
+                        });
                 return;
             } else {
                 if (args.length == 1 && target.length() >= 3 && target.length() <= 16) {
                     // target is probably a Minecraft player name
                     OfflinePlayer player = Arrays.stream(Bukkit.getOfflinePlayers())
                             .filter(OfflinePlayer::hasPlayedBefore)
-                            .filter(p -> p.getName() != null && p.getName().equalsIgnoreCase(target))
-                            .findFirst().orElse(null);
+                            .filter(p -> p.getName() != null && p.getName().equalsIgnoreCase(target)).findFirst()
+                            .orElse(null);
 
                     if (player != null) {
                         // found them
                         notifyInterpret(sender, "Minecraft player");
                         notifyPlayer(sender, player);
-                        notifyDiscord(sender, DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player.getUniqueId()));
+                        notifyDiscord(sender,
+                                DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player.getUniqueId()));
 
                         DiscordSRV.getPlugin().getAccountLinkManager().unlink(player.getUniqueId());
                         notifyUnlinked(sender);
@@ -132,10 +135,10 @@ public class CommandUnlink {
 
                     Set<User> matches = DiscordSRV.getPlugin().getMainGuild().getMembers().stream()
                             .filter(member -> member.getUser().getName().equalsIgnoreCase(targetUsername)
-                                    || (member.getNickname() != null && member.getNickname().equalsIgnoreCase(targetUsername)))
+                                    || (member.getNickname() != null
+                                            && member.getNickname().equalsIgnoreCase(targetUsername)))
                             .filter(member -> member.getUser().getDiscriminator().contains(discriminator))
-                            .map(Member::getUser)
-                            .collect(Collectors.toSet());
+                            .map(Member::getUser).collect(Collectors.toSet());
 
                     if (matches.size() != 0) {
                         notifyInterpret(sender, "Discord name");
@@ -143,27 +146,32 @@ public class CommandUnlink {
                         if (matches.size() == 1) {
                             User user = matches.iterator().next();
                             notifyDiscord(sender, user.getId());
-                            UUID uuid = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(user.getId());
-                            if (uuid != null) {
-                                notifyPlayer(sender, Bukkit.getOfflinePlayer(uuid));
-                                DiscordSRV.getPlugin().getAccountLinkManager().unlink(user.getId());
-                                notifyUnlinked(sender);
-                            } else {
-                                notifyPlayer(sender, null);
-                            }
+                            Arrays.stream(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(user.getId()).map(
+                                    left -> new UUID[] { left }, right -> new UUID[] { right.javaID, right.bedrockID }))
+                                    .forEach(uuid -> {
+                                        if (uuid != null) {
+                                            notifyPlayer(sender, Bukkit.getOfflinePlayer(uuid));
+                                            DiscordSRV.getPlugin().getAccountLinkManager().unlink(user.getId());
+                                            notifyUnlinked(sender);
+                                        } else {
+                                            notifyPlayer(sender, null);
+                                        }
+                                    });
                         } else {
                             matches.stream().limit(5).forEach(user -> {
-                                UUID uuid = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(user.getId());
-                                notifyPlayer(sender, uuid != null ? Bukkit.getOfflinePlayer(uuid) : null);
-                                notifyDiscord(sender, user.getId());
+                                Arrays.stream(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(user.getId()).map(
+                                        left -> new UUID[] { left },
+                                        right -> new UUID[] { right.javaID, right.bedrockID })).forEach(uuid -> {
+                                            notifyPlayer(sender, uuid != null ? Bukkit.getOfflinePlayer(uuid) : null);
+                                            notifyDiscord(sender, user.getId());
+                                        });
                             });
 
                             int remaining = matches.size() - 5;
                             if (remaining >= 1) {
-                                MessageUtil.sendMessage(sender, String.format("%s+%s%d%s more result%s...",
-                                        ChatColor.AQUA, ChatColor.WHITE, remaining, ChatColor.AQUA,
-                                        remaining > 1 ? "s" : "")
-                                );
+                                MessageUtil.sendMessage(sender,
+                                        String.format("%s+%s%d%s more result%s...", ChatColor.AQUA, ChatColor.WHITE,
+                                                remaining, ChatColor.AQUA, remaining > 1 ? "s" : ""));
                             }
 
                             MessageUtil.sendMessage(sender, ChatColor.AQUA + "Be more specific.");
@@ -174,7 +182,8 @@ public class CommandUnlink {
             }
 
             // no matches at all found
-            MessageUtil.sendMessage(sender, LangUtil.Message.LINKED_NOBODY_FOUND.toString().replace("%target%", joinedTarget));
+            MessageUtil.sendMessage(sender,
+                    LangUtil.Message.LINKED_NOBODY_FOUND.toString().replace("%target%", joinedTarget));
         }
     }
 

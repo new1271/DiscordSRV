@@ -22,12 +22,14 @@
 
 package github.scarsz.discordsrv.objects.managers.link;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.MalformedJsonException;
 import github.scarsz.discordsrv.Debug;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.util.DiscordUtil;
+import github.scarsz.discordsrv.util.Either;
 import github.scarsz.discordsrv.util.LangUtil;
 import github.scarsz.discordsrv.util.MessageUtil;
 import github.scarsz.discordsrv.util.PrettyUtil;
@@ -43,25 +45,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FileAccountLinkManager extends AbstractAccountLinkManager {
 
-    private final DualHashBidiMap<String, UUID> linkedAccounts = new DualHashBidiMap<>();
+    private final DualHashBidiMap<String, Either<UUID, JBUser>> linkedAccounts = new DualHashBidiMap<>();
 
     @SuppressWarnings("ConstantConditions") // MalformedJsonException is a checked exception
     public FileAccountLinkManager() {
-        if (!DiscordSRV.getPlugin().getLinkedAccountsFile().exists() ||
-                DiscordSRV.getPlugin().getLinkedAccountsFile().length() == 0) return;
+        if (!DiscordSRV.getPlugin().getLinkedAccountsFile().exists()
+                || DiscordSRV.getPlugin().getLinkedAccountsFile().length() == 0)
+            return;
         linkedAccounts.clear();
 
         try {
-            String fileContent = FileUtils.readFileToString(DiscordSRV.getPlugin().getLinkedAccountsFile(), StandardCharsets.UTF_8);
-            if (fileContent == null || StringUtils.isBlank(fileContent)) fileContent = "{}";
+            String fileContent = FileUtils.readFileToString(DiscordSRV.getPlugin().getLinkedAccountsFile(),
+                    StandardCharsets.UTF_8);
+            if (fileContent == null || StringUtils.isBlank(fileContent))
+                fileContent = "{}";
             JsonObject jsonObject;
             try {
                 jsonObject = DiscordSRV.getPlugin().getGson().fromJson(fileContent, JsonObject.class);
             } catch (Throwable t) {
-                if (!(t instanceof MalformedJsonException) && !(t instanceof JsonSyntaxException) || !t.getMessage().contains("JsonPrimitive")) {
+                if (!(t instanceof MalformedJsonException) && !(t instanceof JsonSyntaxException)
+                        || !t.getMessage().contains("JsonPrimitive")) {
                     DiscordSRV.error("Failed to load linkedaccounts.json", t);
                     return;
                 } else {
@@ -71,19 +78,32 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
 
             jsonObject.entrySet().forEach(entry -> {
                 String key = entry.getKey();
-                String value = entry.getValue().getAsString();
-                if (key.isEmpty() || value.isEmpty()) {
-                    // empty values are not allowed.
-                    return;
-                }
+                if (entry.getValue().isJsonArray()) {
+                    JsonArray value = entry.getValue().getAsJsonArray();
+                    if (value.size() <= 0) {
+                        return;
+                    } else if (value.size() >= 2) {
+                        JBUser user = new JBUser(UUID.fromString(value.get(0).getAsString()),
+                                UUID.fromString(value.get(1).getAsString()));
+                        linkedAccounts.put(key, Either.right(user));
+                    }
 
-                try {
-                    linkedAccounts.put(key, UUID.fromString(value));
-                } catch (Exception e) {
+                } else {
+                    String value = entry.getValue().getAsString();
+                    if (key.isEmpty() || value.isEmpty()) {
+                        // empty values are not allowed.
+                        return;
+                    }
+
                     try {
-                        linkedAccounts.put(value, UUID.fromString(key));
-                    } catch (Exception f) {
-                        DiscordSRV.warning("Failed to load linkedaccounts.json file. It's extremely recommended to delete your linkedaccounts.json file.");
+                        linkedAccounts.put(key, Either.left(UUID.fromString(value)));
+                    } catch (Exception e) {
+                        try {
+                            linkedAccounts.put(value, Either.left(UUID.fromString(key)));
+                        } catch (Exception f) {
+                            DiscordSRV.warning(
+                                    "Failed to load linkedaccounts.json file. It's extremely recommended to delete your linkedaccounts.json file.");
+                        }
                     }
                 }
             });
@@ -105,7 +125,7 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
     }
 
     @Override
-    public Map<String, UUID> getLinkedAccounts() {
+    public Map<String, Either<UUID, JBUser>> getLinkedAccounts() {
         return linkedAccounts;
     }
 
@@ -115,7 +135,7 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
     }
 
     @Override
-    public UUID getUuidFromCache(String discordId) {
+    public Either<UUID, JBUser> getUuidFromCache(String discordId) {
         return getUuid(discordId);
     }
 
@@ -134,14 +154,39 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
             if (DiscordSRV.config().getBoolean("MinecraftDiscordAccountLinkedAllowRelinkBySendingANewCode")) {
                 unlink(discordId);
             } else {
-                UUID uuid;
+                UUID[] uuidList = null;
                 synchronized (linkedAccounts) {
-                    uuid = linkedAccounts.get(discordId);
+                    UUID[] uuids = new UUID[2];
+                    AtomicInteger counter = new AtomicInteger(0);
+                    Either<UUID, JBUser> account = linkedAccounts.get(discordId);
+                    account.apply(uuid -> {
+                        uuids[0] = uuid;
+                    }, uuidPair -> {
+                        uuids[0] = uuidPair.javaID;
+                        uuids[1] = uuidPair.bedrockID;
+                        counter.set(1);
+                    });
+                    uuidList = new UUID[counter.intValue()];
+                    for (int i = 0; i <= counter.intValue(); i++) {
+                        uuidList[i] = uuids[i];
+                    }
+                    uuidList = uuids;
                 }
-                OfflinePlayer offlinePlayer = DiscordSRV.getPlugin().getServer().getOfflinePlayer(uuid);
-                return LangUtil.Message.ALREADY_LINKED.toString()
-                        .replace("%username%", PrettyUtil.beautifyUsername(offlinePlayer, "<Unknown>", false))
-                        .replace("%uuid%", uuid.toString());
+                if (uuidList.length == 1) {
+                    OfflinePlayer offlinePlayer = DiscordSRV.getPlugin().getServer().getOfflinePlayer(uuidList[0]);
+                    return LangUtil.Message.ALREADY_LINKED.toString()
+                            .replace("%username%", PrettyUtil.beautifyUsername(offlinePlayer, "<Unknown>", false))
+                            .replace("%uuid%", uuidList[0].toString());
+                } else if (uuidList.length == 2) {
+                    OfflinePlayer offlinePlayer = DiscordSRV.getPlugin().getServer().getOfflinePlayer(uuidList[0]);
+                    OfflinePlayer offlinePlayer2 = DiscordSRV.getPlugin().getServer().getOfflinePlayer(uuidList[1]);
+                    return LangUtil.Message.ALREADY_LINKED_JAVA_BEDROCK.toString()
+                            .replace("%java_username%", PrettyUtil.beautifyUsername(offlinePlayer, "<Unknown>", false))
+                            .replace("%java_uuid%", uuidList[0].toString())
+                            .replace("%bedrock_username%",
+                                    PrettyUtil.beautifyUsername(offlinePlayer2, "<Unknown>", false))
+                            .replace("%bedrock_uuid%", uuidList[1].toString());
+                }
             }
         }
 
@@ -150,14 +195,14 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
 
         if (linkingCodes.containsKey(linkCode)) {
             link(discordId, linkingCodes.get(linkCode));
-            linkingCodes.remove(linkCode);
+            UUID uuid = linkingCodes.remove(linkCode);
 
-            OfflinePlayer player = Bukkit.getOfflinePlayer(getUuid(discordId));
+            OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
             if (player.isOnline()) {
-                MessageUtil.sendMessage(Bukkit.getPlayer(getUuid(discordId)), LangUtil.Message.MINECRAFT_ACCOUNT_LINKED.toString()
-                        .replace("%username%", DiscordUtil.getUserById(discordId).getName())
-                        .replace("%id%", DiscordUtil.getUserById(discordId).getId())
-                );
+                MessageUtil.sendMessage(Bukkit.getPlayer(uuid),
+                        LangUtil.Message.MINECRAFT_ACCOUNT_LINKED.toString()
+                                .replace("%username%", DiscordUtil.getUserById(discordId).getName())
+                                .replace("%id%", DiscordUtil.getUserById(discordId).getId()));
             }
 
             return LangUtil.Message.DISCORD_ACCOUNT_LINKED.toString()
@@ -166,8 +211,7 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
                     .replace("%uuid%", getUuid(discordId).toString());
         }
 
-        return linkCode.length() == 4
-                ? LangUtil.Message.UNKNOWN_CODE.toString()
+        return linkCode.length() == 4 ? LangUtil.Message.UNKNOWN_CODE.toString()
                 : LangUtil.Message.INVALID_CODE.toString();
     }
 
@@ -191,32 +235,34 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
             synchronized (linkedAccounts) {
                 discordId = linkedAccounts.getKey(uuid);
             }
-            if (discordId != null) results.put(uuid, discordId);
+            if (discordId != null)
+                results.put(uuid, discordId);
         }
         return results;
     }
 
     @Override
-    public UUID getUuid(String discordId) {
+    public Either<UUID, JBUser> getUuid(String discordId) {
         synchronized (linkedAccounts) {
             return linkedAccounts.get(discordId);
         }
     }
 
     @Override
-    public UUID getUuidBypassCache(String discordId) {
+    public Either<UUID, JBUser> getUuidBypassCache(String discordId) {
         return getUuid(discordId);
     }
 
     @Override
-    public Map<String, UUID> getManyUuids(Set<String> discordIds) {
-        Map<String, UUID> results = new HashMap<>();
+    public Map<String, Either<UUID, JBUser>> getManyUuids(Set<String> discordIds) {
+        Map<String, Either<UUID, JBUser>> results = new HashMap<>();
         for (String discordId : discordIds) {
-            UUID uuid;
+            Either<UUID, JBUser> data;
             synchronized (linkedAccounts) {
-                uuid = linkedAccounts.get(discordId);
+                data = linkedAccounts.get(discordId);
             }
-            if (uuid != null) results.put(discordId, uuid);
+            if (data != null)
+                results.put(discordId, data);
         }
         return results;
     }
@@ -233,7 +279,22 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
         unlink(uuid);
 
         synchronized (linkedAccounts) {
-            linkedAccounts.put(discordId, uuid);
+            if (linkedAccounts.containsKey(discordId)) {
+                Either<UUID, JBUser> data = linkedAccounts.get(discordId);
+                if (data.isLeft() || data.isEmpty()) {
+                    linkedAccounts.put(discordId, Either.left(uuid));
+                } else if (data.isRight()) {
+                    JBUser user = data.right().get();
+                    if (uuid.getMostSignificantBits() == 0) {
+                        user.bedrockID = uuid;
+                    } else {
+                        user.javaID = uuid;
+                    }
+                    linkedAccounts.put(discordId, Either.right(user));
+                }
+            } else {
+                linkedAccounts.put(discordId, Either.left(uuid));
+            }
         }
         afterLink(discordId, uuid);
     }
@@ -244,7 +305,8 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
         synchronized (linkedAccounts) {
             discordId = linkedAccounts.getKey(uuid);
         }
-        if (discordId == null) return;
+        if (discordId == null)
+            return;
 
         synchronized (linkedAccounts) {
             beforeUnlink(uuid, discordId);
@@ -256,17 +318,31 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
 
     @Override
     public void unlink(String discordId) {
-        UUID uuid;
+        Either<UUID, JBUser> data;
         synchronized (linkedAccounts) {
-            uuid = linkedAccounts.get(discordId);
+            data = linkedAccounts.get(discordId);
         }
-        if (uuid == null) return;
+        if (data == null || data.isEmpty())
+            return;
 
         synchronized (linkedAccounts) {
-            beforeUnlink(uuid, discordId);
-            linkedAccounts.remove(discordId);
+            if (data.isLeft()) {
+                beforeUnlink(data.left().get(), discordId);
+                linkedAccounts.remove(discordId);
+            } else if (data.isRight()) {
+                JBUser user = data.right().get();
+                beforeUnlink(user.javaID, discordId);
+                beforeUnlink(user.bedrockID, discordId);
+                linkedAccounts.remove(discordId);
+            }
         }
-        afterUnlink(uuid, discordId);
+        if (data.isLeft()) {
+            afterUnlink(data.left().get(), discordId);
+        } else if (data.isRight()) {
+            JBUser user = data.right().get();
+            afterUnlink(user.javaID, discordId);
+            afterUnlink(user.bedrockID, discordId);
+        }
     }
 
     @Override
@@ -278,15 +354,15 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
             synchronized (linkedAccounts) {
                 linkedAccounts.forEach((discordId, uuid) -> map.addProperty(discordId, String.valueOf(uuid)));
             }
-            FileUtils.writeStringToFile(DiscordSRV.getPlugin().getLinkedAccountsFile(), map.toString(), StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(DiscordSRV.getPlugin().getLinkedAccountsFile(), map.toString(),
+                    StandardCharsets.UTF_8);
         } catch (IOException e) {
             DiscordSRV.error(LangUtil.InternalMessage.LINKED_ACCOUNTS_SAVE_FAILED + ": " + e.getMessage());
             return;
         }
 
-        DiscordSRV.info(LangUtil.InternalMessage.LINKED_ACCOUNTS_SAVED.toString()
-                .replace("{ms}", String.valueOf(System.currentTimeMillis() - startTime))
-        );
+        DiscordSRV.info(LangUtil.InternalMessage.LINKED_ACCOUNTS_SAVED.toString().replace("{ms}",
+                String.valueOf(System.currentTimeMillis() - startTime)));
     }
 
 }
