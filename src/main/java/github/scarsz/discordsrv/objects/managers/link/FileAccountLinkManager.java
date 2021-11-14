@@ -201,7 +201,7 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
             return LangUtil.Message.DISCORD_ACCOUNT_LINKED.toString()
                     .replace("%name%", PrettyUtil.beautifyUsername(player, "<Unknown>", false))
                     .replace("%displayname%", PrettyUtil.beautifyNickname(player, "<Unknown>", false))
-                    .replace("%uuid%", getUuid(discordId).toString());
+                    .replace("%uuid%", uuid.toString());
         }
 
         return linkCode.length() == 4 ? LangUtil.Message.UNKNOWN_CODE.toString()
