@@ -96,7 +96,7 @@ public class CommandUnlink {
                     || (StringUtils.isNumeric(target) && target.length() >= 17 && target.length() <= 20)) {
                 // target is a Discord ID
                 notifyInterpret(sender, "Discord ID");
-                Arrays.stream(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(target)
+                Arrays.stream((UUID[]) DiscordSRV.getPlugin().getAccountLinkManager().getUuid(target)
                         .map(left -> new UUID[] { left }, right -> new UUID[] { right.javaID, right.bedrockID }))
                         .forEach(uuid -> {
                             notifyPlayer(sender, uuid != null ? Bukkit.getOfflinePlayer(uuid) : null);
@@ -146,8 +146,9 @@ public class CommandUnlink {
                         if (matches.size() == 1) {
                             User user = matches.iterator().next();
                             notifyDiscord(sender, user.getId());
-                            Arrays.stream(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(user.getId()).map(
-                                    left -> new UUID[] { left }, right -> new UUID[] { right.javaID, right.bedrockID }))
+                            Arrays.stream((UUID[]) DiscordSRV.getPlugin().getAccountLinkManager().getUuid(user.getId())
+                                    .map(left -> new UUID[] { left },
+                                            right -> new UUID[] { right.javaID, right.bedrockID }))
                                     .forEach(uuid -> {
                                         if (uuid != null) {
                                             notifyPlayer(sender, Bukkit.getOfflinePlayer(uuid));
@@ -159,9 +160,10 @@ public class CommandUnlink {
                                     });
                         } else {
                             matches.stream().limit(5).forEach(user -> {
-                                Arrays.stream(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(user.getId()).map(
-                                        left -> new UUID[] { left },
-                                        right -> new UUID[] { right.javaID, right.bedrockID })).forEach(uuid -> {
+                                Arrays.stream((UUID[]) DiscordSRV.getPlugin().getAccountLinkManager()
+                                        .getUuid(user.getId()).map(left -> new UUID[] { left },
+                                                right -> new UUID[] { right.javaID, right.bedrockID }))
+                                        .forEach(uuid -> {
                                             notifyPlayer(sender, uuid != null ? Bukkit.getOfflinePlayer(uuid) : null);
                                             notifyDiscord(sender, user.getId());
                                         });

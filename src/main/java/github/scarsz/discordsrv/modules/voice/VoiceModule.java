@@ -258,7 +258,7 @@ public class VoiceModule extends ListenerAdapter implements Listener {
             }
 
             for (Member member : members) {
-                Arrays.stream(getUniqueIds(member).map(left -> new UUID[] { left },
+                Arrays.stream((UUID[]) getUniqueIds(member).map(left -> new UUID[] { left },
                         right -> new UUID[] { right.javaID, right.bedrockID })).forEach(uuid -> {
                             VoiceChannel playerChannel = member.getVoiceState().getChannel();
 

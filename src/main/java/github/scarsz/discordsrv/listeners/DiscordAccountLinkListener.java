@@ -55,8 +55,8 @@ public class DiscordAccountLinkListener extends ListenerAdapter {
     }
 
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        Arrays.stream(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getUser().getId())
-                .map(left -> new UUID[] { left }, right -> new UUID[] { right.javaID, right.bedrockID }))
+        Arrays.<UUID>stream((UUID[]) DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getUser().getId())
+                .<UUID[]>map(left -> new UUID[] { left }, right -> new UUID[] { right.javaID, right.bedrockID }))
                 .forEach(uuid -> {
                     // add linked role and nickname back to people when they rejoin the server
                     if (uuid != null) {

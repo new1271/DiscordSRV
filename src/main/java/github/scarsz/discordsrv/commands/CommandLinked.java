@@ -90,7 +90,7 @@ public class CommandLinked {
                     || (StringUtils.isNumeric(target) && target.length() >= 17 && target.length() <= 20)) {
                 // target is a Discord ID
                 notifyInterpret(sender, "Discord ID");
-                Arrays.stream(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(target)
+                Arrays.<UUID>stream((UUID[])DiscordSRV.getPlugin().getAccountLinkManager().getUuid(target)
                         .map(left -> new UUID[] { left }, right -> new UUID[] { right.javaID, right.bedrockID }))
                         .forEach(uuid -> {
                             notifyPlayer(sender, uuid != null ? Bukkit.getOfflinePlayer(uuid) : null);
@@ -147,8 +147,9 @@ public class CommandLinked {
                         notifyInterpret(sender, "Discord name");
 
                         matches.stream().limit(5).forEach(user -> {
-                            Arrays.stream(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(user.getId()).map(
-                                    left -> new UUID[] { left }, right -> new UUID[] { right.javaID, right.bedrockID }))
+                            Arrays.stream((UUID[]) DiscordSRV.getPlugin().getAccountLinkManager().getUuid(user.getId())
+                                    .map(left -> new UUID[] { left },
+                                            right -> new UUID[] { right.javaID, right.bedrockID }))
                                     .forEach(uuid -> {
                                         notifyPlayer(sender, uuid != null ? Bukkit.getOfflinePlayer(uuid) : null);
                                         notifyDiscord(sender, user.getId());

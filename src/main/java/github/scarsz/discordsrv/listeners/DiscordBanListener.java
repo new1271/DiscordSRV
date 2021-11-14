@@ -42,7 +42,7 @@ public class DiscordBanListener extends ListenerAdapter {
     @SuppressWarnings("deprecation") // something something paper component
     @Override
     public void onGuildBan(GuildBanEvent event) {
-        Arrays.stream(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getUser().getId())
+        Arrays.<UUID>stream((UUID[]) DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getUser().getId())
                 .map(left -> new UUID[] { left }, right -> new UUID[] { right.javaID, right.bedrockID }))
                 .forEach(linkedUuid -> {
                     if (linkedUuid == null) {
@@ -75,7 +75,7 @@ public class DiscordBanListener extends ListenerAdapter {
 
     @Override
     public void onGuildUnban(GuildUnbanEvent event) {
-        Arrays.stream(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getUser().getId())
+        Arrays.<UUID>stream((UUID[]) DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getUser().getId())
                 .map(left -> new UUID[] { left }, right -> new UUID[] { right.javaID, right.bedrockID }))
                 .forEach(linkedUuid -> {
                     if (linkedUuid == null) {

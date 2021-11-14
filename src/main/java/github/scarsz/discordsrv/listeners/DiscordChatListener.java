@@ -30,6 +30,7 @@ import github.scarsz.discordsrv.hooks.DynmapHook;
 import github.scarsz.discordsrv.hooks.VaultHook;
 import github.scarsz.discordsrv.hooks.world.MultiverseCoreHook;
 import github.scarsz.discordsrv.objects.SingleCommandSender;
+import github.scarsz.discordsrv.objects.managers.AccountLinkManager.JBUser;
 import github.scarsz.discordsrv.util.*;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
@@ -246,25 +247,26 @@ public class DiscordChatListener extends ListenerAdapter {
 
         // apply placeholder API values
         Player authorPlayer = null;
-        UUID authorLinkedUuid = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getAuthor().getId())
-                .map(left -> {
-                    return left;
-                }, right -> {
-                    boolean javaOnline = Bukkit.getOfflinePlayer(right.javaID).isOnline();
-                    if (javaOnline) {
-                        return right.javaID;
+        Either<UUID, JBUser> either = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getAuthor().getId());
+        if (either != null) {
+            UUID authorLinkedUuid = either.map(left -> {
+                return left;
+            }, right -> {
+                boolean javaOnline = Bukkit.getOfflinePlayer(right.javaID).isOnline();
+                if (javaOnline) {
+                    return right.javaID;
+                } else {
+                    boolean bedrockOnline = Bukkit.getOfflinePlayer(right.bedrockID).isOnline();
+                    if (bedrockOnline) {
+                        return right.bedrockID;
                     } else {
-                        boolean bedrockOnline = Bukkit.getOfflinePlayer(right.bedrockID).isOnline();
-                        if (bedrockOnline) {
-                            return right.bedrockID;
-                        } else {
-                            return right.javaID;
-                        }
+                        return right.javaID;
                     }
-                });
-        if (authorLinkedUuid != null)
-            authorPlayer = Bukkit.getPlayer(authorLinkedUuid);
-
+                }
+            });
+            if (authorLinkedUuid != null)
+                authorPlayer = Bukkit.getPlayer(authorLinkedUuid);
+        }
         formatMessage = PlaceholderUtil.replacePlaceholders(formatMessage, authorPlayer);
         Component component = MessageUtil.toComponent(formatMessage);
         component = replaceTopRoleColor(component,
