@@ -53,7 +53,6 @@ import github.scarsz.discordsrv.objects.managers.GroupSynchronizationManager;
 import github.scarsz.discordsrv.objects.managers.IncompatibleClientManager;
 import github.scarsz.discordsrv.objects.managers.AccountLinkManager.JBUser;
 import github.scarsz.discordsrv.objects.managers.link.FileAccountLinkManager;
-import github.scarsz.discordsrv.objects.managers.link.JdbcAccountLinkManager;
 import github.scarsz.discordsrv.objects.threads.ChannelTopicUpdater;
 import github.scarsz.discordsrv.objects.threads.NicknameUpdater;
 import github.scarsz.discordsrv.objects.threads.PresenceUpdater;
@@ -1947,7 +1946,7 @@ public class DiscordSRV extends JavaPlugin {
             } else {
                 return;
             }
-            authorPlayer = Bukkit.getPlayer();
+            authorPlayer = Bukkit.getPlayer(uuid);
         }
 
         message = PlaceholderUtil.replacePlaceholders(message, authorPlayer);

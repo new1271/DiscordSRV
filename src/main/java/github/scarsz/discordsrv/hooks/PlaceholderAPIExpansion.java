@@ -24,7 +24,6 @@ package github.scarsz.discordsrv.hooks;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
-import github.scarsz.discordsrv.objects.managers.link.JdbcAccountLinkManager;
 import github.scarsz.discordsrv.util.DiscordUtil;
 import github.scarsz.discordsrv.util.MessageUtil;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;
@@ -53,10 +52,12 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
 
     @Override
     public @Nullable String onRequest(@Nullable OfflinePlayer player, @NotNull String identifier) {
-        if (!DiscordSRV.isReady) return "...";
+        if (!DiscordSRV.isReady)
+            return "...";
 
         Guild mainGuild = DiscordSRV.getPlugin().getMainGuild();
-        if (mainGuild == null) return "";
+        if (mainGuild == null)
+            return "";
 
         Set<Member> onlineMembers = mainGuild.getMemberCache().stream()
                 .filter(member -> member.getOnlineStatus() != OnlineStatus.OFFLINE)
@@ -64,15 +65,6 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
         Set<String> onlineMemberIds = onlineMembers.stream().map(Member::getId).collect(Collectors.toSet());
         AccountLinkManager accountLinkManager = DiscordSRV.getPlugin().getAccountLinkManager();
         Supplier<Set<String>> linkedAccounts = () -> {
-            if (accountLinkManager instanceof JdbcAccountLinkManager && Bukkit.isPrimaryThread()) {
-                // not permitted
-                long currentTime = System.currentTimeMillis();
-                if (lastIssue + TimeUnit.SECONDS.toMillis(10) < currentTime) {
-                    DiscordSRV.warning("The %discordsrv_linked_online% placeholder was requested via PlaceholderAPI on the main thread while JDBC is enabled, this is unsupported");
-                    lastIssue = currentTime;
-                }
-                return Collections.emptySet();
-            }
             return accountLinkManager.getLinkedAccounts().keySet();
         };
 
@@ -94,17 +86,21 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             case "guild_owner_nickname":
                 return applyOrEmptyString(mainGuild.getOwner(), Member::getNickname);
             case "guild_owner_game_name":
-                return applyOrEmptyString(mainGuild.getOwner(), member -> member.getActivities().stream().findFirst().map(Activity::getName).orElse(""));
+                return applyOrEmptyString(mainGuild.getOwner(),
+                        member -> member.getActivities().stream().findFirst().map(Activity::getName).orElse(""));
             case "guild_owner_game_url":
-                return applyOrEmptyString(mainGuild.getOwner(), member -> member.getActivities().stream().findFirst().map(Activity::getUrl).orElse(""));
+                return applyOrEmptyString(mainGuild.getOwner(),
+                        member -> member.getActivities().stream().findFirst().map(Activity::getUrl).orElse(""));
             case "guild_bot_effective_name":
                 return mainGuild.getSelfMember().getEffectiveName();
             case "guild_bot_nickname":
                 return orEmptyString(mainGuild.getSelfMember().getNickname());
             case "guild_bot_game_name":
-                return applyOrEmptyString(mainGuild.getSelfMember(), member -> member.getActivities().stream().findFirst().map(Activity::getName).orElse(""));
+                return applyOrEmptyString(mainGuild.getSelfMember(),
+                        member -> member.getActivities().stream().findFirst().map(Activity::getName).orElse(""));
             case "guild_bot_game_url":
-                return applyOrEmptyString(mainGuild.getSelfMember(), member -> member.getActivities().stream().findFirst().map(Activity::getUrl).orElse(""));
+                return applyOrEmptyString(mainGuild.getSelfMember(),
+                        member -> member.getActivities().stream().findFirst().map(Activity::getUrl).orElse(""));
             case "guild_members_online":
                 return String.valueOf(onlineMembers.size());
             case "guild_members_total":
@@ -115,7 +111,8 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
                 return String.valueOf(accountLinkManager.getLinkedAccountCount());
         }
 
-        if (player == null) return "";
+        if (player == null)
+            return "";
 
         String userId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordIdBypassCache(player.getUniqueId());
         switch (identifier) {
@@ -126,7 +123,8 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
         }
 
         User user = DiscordUtil.getUserById(userId);
-        if (user == null) return "";
+        if (user == null)
+            return "";
 
         switch (identifier) {
             case "user_name":
@@ -136,7 +134,8 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
         }
 
         Member member = mainGuild.getMember(user);
-        if (member == null) return "";
+        if (member == null)
+            return "";
 
         switch (identifier) {
             case "user_effective_name":
@@ -151,10 +150,12 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
                 return member.getActivities().stream().findFirst().map(Activity::getUrl).orElse("");
         }
 
-        if (member.getRoles().isEmpty()) return "";
+        if (member.getRoles().isEmpty())
+            return "";
 
         List<Role> selectedRoles = DiscordSRV.getPlugin().getSelectedRoles(member);
-        if (selectedRoles.isEmpty()) return "";
+        if (selectedRoles.isEmpty())
+            return "";
 
         Role topRole = DiscordUtil.getTopRole(member);
         if (topRole != null) {
@@ -166,7 +167,8 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
                 case "user_top_role_color_hex":
                     return applyOrEmptyString(topRole.getColorRaw(), this::getHex);
                 case "user_top_role_color_code":
-                    String legacy = MessageUtil.toLegacy(Component.text(0).color(TextColor.color(topRole.getColorRaw())));
+                    String legacy = MessageUtil
+                            .toLegacy(Component.text(0).color(TextColor.color(topRole.getColorRaw())));
                     return legacy.substring(0, legacy.length() - 1);
             }
         }
@@ -179,7 +181,8 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
     }
 
     private <T> String applyOrEmptyString(T input, Function<T, String> function) {
-        if (input == null) return "";
+        if (input == null)
+            return "";
         String output = function.apply(input);
         return orEmptyString(output);
     }
