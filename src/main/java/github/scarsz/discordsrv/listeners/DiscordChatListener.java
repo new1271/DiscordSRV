@@ -289,7 +289,8 @@ public class DiscordChatListener extends ListenerAdapter {
 
         // apply placeholder API values
         Player authorPlayer = null;
-        Either<UUID, JBUser> either = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getAuthor().getId());
+        Either<UUID, JBUser> either = DiscordSRV.getPlugin().getAccountLinkManager()
+                .getUuids(event.getAuthor().getId());
         if (either != null) {
             UUID authorLinkedUuid = either.map(left -> {
                 return left;

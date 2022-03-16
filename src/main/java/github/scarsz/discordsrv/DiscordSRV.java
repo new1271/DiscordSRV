@@ -1936,7 +1936,8 @@ public class DiscordSRV extends JavaPlugin {
     public void broadcastMessageToMinecraftServer(String channel, String message, User author) {
         // apply placeholder API values
         Player authorPlayer = null;
-        Either<UUID, JBUser> authorLinkedUuids = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(author.getId());
+        Either<UUID, JBUser> authorLinkedUuids = DiscordSRV.getPlugin().getAccountLinkManager()
+                .getUuids(author.getId());
         if (authorLinkedUuids != null) {
             UUID uuid;
             if (authorLinkedUuids.isLeft()) {

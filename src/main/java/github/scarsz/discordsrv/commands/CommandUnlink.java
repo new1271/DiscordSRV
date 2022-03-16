@@ -96,7 +96,7 @@ public class CommandUnlink {
                     || (StringUtils.isNumeric(target) && target.length() >= 17 && target.length() <= 20)) {
                 // target is a Discord ID
                 notifyInterpret(sender, "Discord ID");
-                Arrays.stream((UUID[]) DiscordSRV.getPlugin().getAccountLinkManager().getUuid(target)
+                Arrays.stream((UUID[]) DiscordSRV.getPlugin().getAccountLinkManager().getUuids(target)
                         .map(left -> new UUID[] { left }, right -> new UUID[] { right.javaID, right.bedrockID }))
                         .forEach(uuid -> {
                             notifyPlayer(sender, uuid != null ? Bukkit.getOfflinePlayer(uuid) : null);
@@ -146,7 +146,7 @@ public class CommandUnlink {
                         if (matches.size() == 1) {
                             User user = matches.iterator().next();
                             notifyDiscord(sender, user.getId());
-                            Arrays.stream((UUID[]) DiscordSRV.getPlugin().getAccountLinkManager().getUuid(user.getId())
+                            Arrays.stream((UUID[]) DiscordSRV.getPlugin().getAccountLinkManager().getUuids(user.getId())
                                     .map(left -> new UUID[] { left },
                                             right -> new UUID[] { right.javaID, right.bedrockID }))
                                     .forEach(uuid -> {
@@ -161,7 +161,7 @@ public class CommandUnlink {
                         } else {
                             matches.stream().limit(5).forEach(user -> {
                                 Arrays.stream((UUID[]) DiscordSRV.getPlugin().getAccountLinkManager()
-                                        .getUuid(user.getId()).map(left -> new UUID[] { left },
+                                        .getUuids(user.getId()).map(left -> new UUID[] { left },
                                                 right -> new UUID[] { right.javaID, right.bedrockID }))
                                         .forEach(uuid -> {
                                             notifyPlayer(sender, uuid != null ? Bukkit.getOfflinePlayer(uuid) : null);

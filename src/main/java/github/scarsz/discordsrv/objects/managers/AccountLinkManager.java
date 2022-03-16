@@ -62,7 +62,20 @@ public abstract class AccountLinkManager implements Listener {
      *                               future)
      * @see #isInCache(String)
      */
-    public abstract Either<UUID, JBUser> getUuid(String discordId);
+    public abstract UUID getUuid(String discordId);
+
+    /**
+     * Gets the Minecraft uuid for a given user's linked account.
+     *
+     * @param discordId the Discord user's id.
+     * @return the user's linked account's uuid or {@code null}.
+     * @throws IllegalStateException if this is requested on Bukkit's main thread
+     *                               for a player that isn't online when DiscordSRV
+     *                               is using a non-memory storage backend (in the
+     *                               future)
+     * @see #isInCache(String)
+     */
+    public abstract Either<UUID, JBUser> getUuids(String discordId);
 
     /**
      * Gets the amount of linked accounts. This is kept in memory and is recommended
@@ -134,7 +147,19 @@ public abstract class AccountLinkManager implements Listener {
      * @return the given user's Minecraft uuid if it is in the cache
      * @see #isInCache(String)
      */
-    public abstract Either<UUID, JBUser> getUuidFromCache(String discordId);
+    public abstract UUID getUuidFromCache(String discordId);
+
+    /**
+     * Gets the Player UUID for the given user from the cache
+     * <p>
+     * WARNING, this may not represent the player's linking status
+     * </p>
+     *
+     * @param discordId the user's id
+     * @return the given user's Minecraft uuid if it is in the cache
+     * @see #isInCache(String)
+     */
+    public abstract Either<UUID, JBUser> getUuidsFromCache(String discordId);
 
     /**
      * <p>
@@ -156,7 +181,18 @@ public abstract class AccountLinkManager implements Listener {
      *
      * @see #getUuid(String)
      */
-    public abstract Either<UUID, JBUser> getUuidBypassCache(String discordId);
+    public abstract UUID getUuidBypassCache(String discordId);
+
+    /**
+    * <p>
+    * Not recommended, may lead to blocking requests to storage backends
+    * </p>
+    * Requests the Minecraft player UUID for the given Discord user id bypassing
+    * any caches or main thread checks. Unsafe.
+    *
+    * @see #getUuids(String)
+    */
+    public abstract Either<UUID, JBUser> getUuidsBypassCache(String discordId);
 
     /**
      * Checks if a given player's Discord account is in cache.

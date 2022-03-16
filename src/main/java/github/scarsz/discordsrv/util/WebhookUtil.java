@@ -130,7 +130,7 @@ public class WebhookUtil {
 
             String userId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player.getUniqueId());
             if (userId != null) {
-                Either<UUID, JBUser> either = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(userId);
+                Either<UUID, JBUser> either = DiscordSRV.getPlugin().getAccountLinkManager().getUuids(userId);
                 if (either.isLeft()) {
                     Member member = DiscordUtil.getMemberById(userId);
                     if (member != null) {

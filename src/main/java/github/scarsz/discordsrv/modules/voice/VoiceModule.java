@@ -348,7 +348,7 @@ public class VoiceModule extends ListenerAdapter implements Listener {
             return;
 
         Either<UUID, JBUser> either = DiscordSRV.getPlugin().getAccountLinkManager()
-                .getUuid(event.getMember().getUser().getId());
+                .getUuids(event.getMember().getUser().getId());
         if (either == null || either.isEmpty())
             return;
         if (either.isLeft()) {
@@ -372,7 +372,7 @@ public class VoiceModule extends ListenerAdapter implements Listener {
                 && event.getChannelLeft().getParent() != null
                 && event.getChannelLeft().getParent().equals(getCategory())) {
             Either<UUID, JBUser> either = DiscordSRV.getPlugin().getAccountLinkManager()
-                    .getUuid(event.getMember().getUser().getId());
+                    .getUuids(event.getMember().getUser().getId());
             if (either == null || either.isEmpty())
                 return;
             if (either.isLeft()) {
@@ -405,7 +405,7 @@ public class VoiceModule extends ListenerAdapter implements Listener {
             return;
 
         Either<UUID, JBUser> either = DiscordSRV.getPlugin().getAccountLinkManager()
-                .getUuid(event.getMember().getUser().getId());
+                .getUuids(event.getMember().getUser().getId());
         if (either == null || either.isEmpty())
             return;
         if (either.isLeft()) {
@@ -508,7 +508,7 @@ public class VoiceModule extends ListenerAdapter implements Listener {
     }
 
     public static Either<UUID, JBUser> getUniqueIds(Member member) {
-        return DiscordSRV.getPlugin().getAccountLinkManager().getUuid(member.getId());
+        return DiscordSRV.getPlugin().getAccountLinkManager().getUuids(member.getId());
     }
 
     public static double verticalDistance(Location location1, Location location2) {

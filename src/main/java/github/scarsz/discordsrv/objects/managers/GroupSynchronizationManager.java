@@ -133,7 +133,7 @@ public class GroupSynchronizationManager extends ListenerAdapter implements List
             // otherwise, only online players are synchronized
             Queue<OfflinePlayer> playerList = new LinkedList<>();
             DiscordUtil.getJda().getGuilds().stream().flatMap(guild -> guild.getMembers().stream())
-                    .map(member -> DiscordSRV.getPlugin().getAccountLinkManager().getUuid(member.getId()))
+                    .map(member -> DiscordSRV.getPlugin().getAccountLinkManager().getUuids(member.getId()))
                     .filter(data -> (Objects.nonNull(data) && !data.isEmpty())).forEach(data -> {
                         if (data.isLeft()) {
                             playerList.add(Bukkit.getOfflinePlayer(data.left().get()));
@@ -154,7 +154,7 @@ public class GroupSynchronizationManager extends ListenerAdapter implements List
     }
 
     public void resync(User user, SyncDirection direction, SyncCause cause) {
-        Either<UUID, JBUser> data = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(user.getId());
+        Either<UUID, JBUser> data = DiscordSRV.getPlugin().getAccountLinkManager().getUuids(user.getId());
         if (data.isLeft()) {
             UUID uuid = data.left().get();
             if (uuid == null) {

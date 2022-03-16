@@ -138,8 +138,13 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
     }
 
     @Override
-    public Either<UUID, JBUser> getUuidFromCache(String discordId) {
+    public UUID getUuidFromCache(String discordId) {
         return getUuid(discordId);
+    }
+
+    @Override
+    public Either<UUID, JBUser> getUuidsFromCache(String discordId) {
+        return getUuids(discordId);
     }
 
     @Override
@@ -247,15 +252,35 @@ public class FileAccountLinkManager extends AbstractAccountLinkManager {
     }
 
     @Override
-    public Either<UUID, JBUser> getUuid(String discordId) {
+    public UUID getUuid(String discordId) {
+        synchronized (linkedAccounts) {
+            Either<UUID, JBUser> uuids = linkedAccounts.get(discordId);
+            if (uuids == null)
+                return null;
+            else if (uuids.isLeft())
+                return uuids.left().get();
+            else if (uuids.isRight())
+                return uuids.right().get().javaID;
+            else
+                return null;
+        }
+    }
+
+    @Override
+    public Either<UUID, JBUser> getUuids(String discordId) {
         synchronized (linkedAccounts) {
             return linkedAccounts.get(discordId);
         }
     }
 
     @Override
-    public Either<UUID, JBUser> getUuidBypassCache(String discordId) {
+    public UUID getUuidBypassCache(String discordId) {
         return getUuid(discordId);
+    }
+
+    @Override
+    public Either<UUID, JBUser> getUuidsBypassCache(String discordId) {
+        return getUuids(discordId);
     }
 
     @Override
