@@ -73,179 +73,383 @@ public class LangUtil {
 
                 ASM_WARNING(new HashMap<Language, String>() {
                         {
-                                put(Language.EN, "\n" + "\n"
-                                                + "You're attempting to use DiscordSRV on ASM 4. DiscordSRV requires ASM 5 to function.\n"
-                                                + "DiscordSRV WILL NOT WORK without ASM 5. Blame your server software's developers for having outdated libraries.\n"
-                                                + "\n" + "Instructions for updating to ASM 5:\n"
-                                                + "1. Navigate to the {specialsourcefolder} folder of the server\n"
-                                                + "2. Delete the SpecialSource-1.7-SNAPSHOT.jar jar file\n"
-                                                + "3. Download SpecialSource v1.7.4 from https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
-                                                + "4. Copy the jar file to the {specialsourcefolder} folder of the server you navigated to earlier\n"
-                                                + "5. Rename the jar file you just copied to SpecialSource-1.7-SNAPSHOT.jar\n"
-                                                + "6. Restart the server\n" + "\n" + "\n");
-                                put(Language.FR, "\n" + "\n"
-                                                + "Vous essayez d'utiliser Discord SRV sur ASM 4. DiscordSRV a besoin de ASM 5 pour fonctionner.\n"
-                                                + "DiscordSRV ne fonctionne pas sans ASM 5. Vos librairies ne sont pas à jour.\n"
-                                                + "\n" + "Instructions pour mettre à jour ASM 5:\n"
-                                                + "1. Allez sur le dossier {specialsourcefolder} du serveur\n"
-                                                + "2. Supprimez le fichier SpecialSource-1.7-SNAPSHOT.jar\n"
-                                                + "3. Téléchargez le fichier v1.7.4 depuis https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
-                                                + "4. Copiez le fichier jar dans le dossier {specialsourcefolder} \n"
-                                                + "5. Renommez le fichier de la façon suivante SpecialSource-1.7-SNAPSHOT.jar\n"
-                                                + "6. Redémarrez le serveur\n" + "\n" + "\n");
-                                put(Language.DE, "\n" + "\n"
-                                                + "Du versuchst DiscordSRV mit ASM 4 zu nuten. DiscordSRV benötigt ASM 5, um zu funktionieren.\n"
-                                                + "DiscordSRV wird ohne ASM5 NICHT funktionieren. Beschuldige die Entwickler deiner Serversoftware dafür, veraltete Bibliotheken zu nutzen.\n"
-                                                + "\n" + "Anleitung zum Nutzen von ASM 5:\n"
-                                                + "1. Navigiere zum Ordner {specialsourcefolder} deines Servers\n"
-                                                + "2. Lösche die Datei SpecialSource-1.7-SNAPSHOT.jar\n"
-                                                + "3. Lade dir die Datei SpecialSource v1.7.4 von hier herunter: https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
-                                                + "4. Kopiere die jar Datei in den zuvor ausgewählten Ordner {specialsourcefolder}\n"
-                                                + "5. Bennen die kopierte jar Datei in SpecialSource-1.7-SNAPSHOT.jar um\n"
-                                                + "6. Starte deinen Server neu\n" + "\n" + "\n");
-                                put(Language.JA, "\n" + "\n"
-                                                + "あなたは、DiscordSRV を ASM 4 で使用しようとしています。DiscordSRV を使用するには、ASM 5 が必要です。\n"
-                                                + "DiscordSRV は ASM 5 でないと正しく動作しません。サーバーソフトウエア開発者に、ライブラリが古くなっていることを教えてあげてください。\n"
-                                                + "\n" + "ASM 5 へのアップデート手順：\n"
-                                                + "1. サーバーの {specialsourcefolder} フォルダーに移動します。\n"
-                                                + "2. SpecialSource-1.7-SNAPSHOT.jar ファイルを削除します。\n"
-                                                + "3. SpecialSource v1.7.4 を、次のURLからダウンロードします。https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
-                                                + "4. ダウンロードしたjarファイルを、{specialsourcefolder} フォルダーにコピーします。\n"
-                                                + "5. コピーしたファイルを、SpecialSource-1.7-SNAPSHOT.jar にリネームします。\n"
-                                                + "6. サーバーを起動します。\n" + "\n" + "\n");
-                                put(Language.KO, "\n" + "\n"
-                                                + "DiscordSRV를 ASM 4에서 구동 중 입니다.. DiscordSRV는 ASM 5 이상 버전에서 작동합니다.\n"
-                                                + "DiscordSRV는 ASM 5없이는 작동 할 수 없습니다. 구식 라이브러리를 써서 만든 서버 소프트웨어 개발자 한테 따지세요.\n"
-                                                + "\n" + "ASM 5로 업데이트 하는 방법:\n"
-                                                + "1. 서버의 {specialsourcefolder} 폴더로 들어갑니다.\n"
-                                                + "2. SpecialSource-1.7-SNAPSHOT.jar 파일을 삭제 합니다.\n"
-                                                + "3. SpecialSource v1.7.4를 https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar 에서 다운로드 받습니다.\n"
-                                                + "4. {specialsourcefolder}로 3에서 다운로드 받은 파일을 복사합니다.\n"
-                                                + "5. 4에서 복사한 파일의 이름을 SpecialSource-1.7-SNAPSHOT.jar로 바꿉니다.\n"
-                                                + "6. 서버를 재부팅 합니다.\n" + "\n" + "\n");
-                                put(Language.NL, "\n" + "\n"
-                                                + "Je probeerd DiscordSRV te gebruiken op ASM 4. DiscordSRV heeft ASM 5 nodig om te functioneren.\n"
-                                                + "DiscordSRV WERKT NIET zonder ASM 5. Geef je server software's developers de schuld maar voor het hebben van outdated libraries.\n"
-                                                + "\n" + "Instructies voor het updaten naar ASM 5:\n"
-                                                + "1. Ga naar de {specialsourcefolder} folder van je server.\n"
-                                                + "2. Verwijder de SpecialSource-1.7-SNAPSHOT.jar jar file.\n"
-                                                + "3. Download SpecialSource v1.7.4 vanaf https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
-                                                + "4. Kopieer de jar file naar de {specialsourcefolder} folder van je server waar je mee bezig bent.\n"
-                                                + "5. Verander de naam van de jar file die je hebt gekopieerd naar SpecialSource-1.7-SNAPSHOT.jar\n"
-                                                + "6. Herstart je server.\n" + "\n" + "\n");
-                                put(Language.ES, "\n" + "\n"
-                                                + "Estás intentando usar DiscordSRV en ASM 4. DiscordSRV necesita ASM 5 para funcionar.\n"
-                                                + "DiscordSRV NO FUNCIONARÁ sin ASM 5. Informe al desarrollador del software del servidor de que la biblioteca no está actualizada.\n"
-                                                + "\n" + "Instrucciones para actualizar a ASM 5:\n"
-                                                + "1. Navegue a la carpeta {specialsourcefolder} de tu servidor\n"
-                                                + "2. Elimine el archivo jar de SpecialSource-1.7-SNAPSHOT.jar\n"
-                                                + "3. Descargue SpecialSource v1.7.4 desde https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
-                                                + "4. Copie el archivo jar en la carpeta {specialsourcefolder} del servidor al que navegaste anteriormente\n"
-                                                + "5. Renombre el archivo jar que acaba de copiar a: SpecialSource-1.7-SNAPSHOT.jar\n"
-                                                + "6. Reinicie el servidor\n" + "\n" + "\n");
-                                put(Language.RU, "\n" + "\n"
-                                                + "Вы пытаетесь использовать DiscordSRV на ASM 4. DiscordSRV требует ASM 5 для работы.\n"
-                                                + "DiscordSRV НЕ БУДЕТ РАБОТАТЬ без ASM 5. Обратитесь к разработчикам вашей игровой платформы, чтобы получить необходимые библиотеки.\n"
-                                                + "\n" + "Инструкции для обновления до ASM 5:\n"
-                                                + "1. Найдите папку {specialsourcefolder} на вашем сервере\n"
-                                                + "2. Удалите SpecialSource-1.7-SNAPSHOT.jar файл\n"
-                                                + "3. Скачайте SpecialSource v1.7.4.jar отсюда https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
-                                                + "4. Скопируйте jar файл в папку {specialsourcefolder} вашего сервера, которую вы открыли ранее\n"
-                                                + "5. Переименуйте jar файл, который вы скопировали в SpecialSource-1.7-SNAPSHOT.jar\n"
-                                                + "6. Перезапустите сервер\n" + "\n" + "\n");
-                                put(Language.ET, "\n" + "\n"
-                                                + "Sa proovid DiscordSRV'i kasutada ASM 4 peal. DiscordSRV nõuab töötamiseks ASM 5-te.\n"
-                                                + "DiscordSRV EI TÖÖTA ilma ASM 5-ta. Süüdista oma serveritarkvara arendajaid vananenud teekide kasutamise eest.\n"
-                                                + "\n" + "Juhised ASM 5-le täiendamiseks:\n"
-                                                + "1. Mine serveris kausta {specialsourcefolder}\n"
-                                                + "2. Kustuta fail SpecialSource-1.7-SNAPSHOT.jar\n"
-                                                + "3. Laadi SpecialSource v1.7.4 alla saidilt https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
-                                                + "4. Kopeeri saadud jar-fail eelnevalt avatud kausta {specialsourcefolder}\n"
-                                                + "5. Nimeta just kopeeritud jar-fail ümber nimeks SpecialSource-1.7-SNAPSHOT.jar\n"
-                                                + "6. Taaskäivita server\n" + "\n" + "\n");
-                                put(Language.ZH, "\n" + "\n" + "您嘗試使用ASM 4來啟動DiscordSRV。 DiscordSRV需要ASM 5來啟動。\n"
-                                                + "DiscordSRV無法在缺少ASM 5的情況下啟動。 請諮詢您的伺服器軟體開發人員關於舊版函式庫。\n" + "\n"
-                                                + "ASM 5 升級指南:\n" + "1. 開啟伺服器中的 {specialsourcefolder} 資料夾\n"
-                                                + "2. 刪除jar檔 SpecialSource-1.7-SNAPSHOT.jar \n"
-                                                + "3. 下載 SpecialSource v1.7.4 從 https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
-                                                + "4. 複製該jar檔至先前在伺服器中開啟的 {specialsourcefolder} 資料夾\n"
-                                                + "5. 並將檔案重新命名為 SpecialSource-1.7-SNAPSHOT.jar\n" + "6. 重啟伺服器\n" + "\n"
-                                                + "\n");
-                                put(Language.PL, "\n" + "\n"
-                                                + "Próbujesz użyć DiscordSRV na ASM 4. DiscordSRV wymaga ASM 5 do działania.\n"
-                                                + "DiscordSRV NIE BĘDZIE DZIAŁAŁ bez ASM 5. wincie twórców oprogramowania serwera za posiadanie nieaktualnych bibliotek.\n"
-                                                + "\n" + "Instrukcje dotyczące aktualizacji do ASM 5:\n"
-                                                + "1. Przejdź do {specialsourcefolder} folder serwera\n"
-                                                + "2. Usuń SpecialSource-1.7-SNAPSHOT.jar plik jar\n"
-                                                + "3. Pobierz SpecialSource v1.7.4 z https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
-                                                + "4. Skopiuj plik jar do {specialsourcefolder} folderu serwera, do którego nawigowałeś wcześniej\n"
-                                                + "5. Zmień nazwę właśnie skopiowanego pliku jar na SpecialSource-1.7-SNAPSHOT.jar\n"
-                                                + "6. Zrestartuj serwer\n" + "\n" + "\n");
+                                put(Language.EN,
+                                                "\n" +
+                                                                "\n" +
+                                                                "You're attempting to use DiscordSRV on ASM 4. DiscordSRV requires ASM 5 to function.\n"
+                                                                +
+                                                                "DiscordSRV WILL NOT WORK without ASM 5. Blame your server software's developers for having outdated libraries.\n"
+                                                                +
+                                                                "\n" +
+                                                                "Instructions for updating to ASM 5:\n" +
+                                                                "1. Navigate to the {specialsourcefolder} folder of the server\n"
+                                                                +
+                                                                "2. Delete the SpecialSource-1.7-SNAPSHOT.jar jar file\n"
+                                                                +
+                                                                "3. Download SpecialSource v1.7.4 from https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
+                                                                +
+                                                                "4. Copy the jar file to the {specialsourcefolder} folder of the server you navigated to earlier\n"
+                                                                +
+                                                                "5. Rename the jar file you just copied to SpecialSource-1.7-SNAPSHOT.jar\n"
+                                                                +
+                                                                "6. Restart the server\n" +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.FR,
+                                                "\n" +
+                                                                "\n" +
+                                                                "Vous essayez d'utiliser Discord SRV sur ASM 4. DiscordSRV a besoin de ASM 5 pour fonctionner.\n"
+                                                                +
+                                                                "DiscordSRV ne fonctionne pas sans ASM 5. Vos librairies ne sont pas à jour.\n"
+                                                                +
+                                                                "\n" +
+                                                                "Instructions pour mettre à jour ASM 5:\n" +
+                                                                "1. Allez sur le dossier {specialsourcefolder} du serveur\n"
+                                                                +
+                                                                "2. Supprimez le fichier SpecialSource-1.7-SNAPSHOT.jar\n"
+                                                                +
+                                                                "3. Téléchargez le fichier v1.7.4 depuis https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
+                                                                +
+                                                                "4. Copiez le fichier jar dans le dossier {specialsourcefolder} \n"
+                                                                +
+                                                                "5. Renommez le fichier de la façon suivante SpecialSource-1.7-SNAPSHOT.jar\n"
+                                                                +
+                                                                "6. Redémarrez le serveur\n" +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.DE,
+                                                "\n" +
+                                                                "\n" +
+                                                                "Du versuchst DiscordSRV mit ASM 4 zu nuten. DiscordSRV benötigt ASM 5, um zu funktionieren.\n"
+                                                                +
+                                                                "DiscordSRV wird ohne ASM5 NICHT funktionieren. Beschuldige die Entwickler deiner Serversoftware dafür, veraltete Bibliotheken zu nutzen.\n"
+                                                                +
+                                                                "\n" +
+                                                                "Anleitung zum Nutzen von ASM 5:\n" +
+                                                                "1. Navigiere zum Ordner {specialsourcefolder} deines Servers\n"
+                                                                +
+                                                                "2. Lösche die Datei SpecialSource-1.7-SNAPSHOT.jar\n" +
+                                                                "3. Lade dir die Datei SpecialSource v1.7.4 von hier herunter: https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
+                                                                +
+                                                                "4. Kopiere die jar Datei in den zuvor ausgewählten Ordner {specialsourcefolder}\n"
+                                                                +
+                                                                "5. Bennen die kopierte jar Datei in SpecialSource-1.7-SNAPSHOT.jar um\n"
+                                                                +
+                                                                "6. Starte deinen Server neu\n" +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.JA,
+                                                "\n" +
+                                                                "\n" +
+                                                                "あなたは、DiscordSRV を ASM 4 で使用しようとしています。DiscordSRV を使用するには、ASM 5 が必要です。\n"
+                                                                +
+                                                                "DiscordSRV は ASM 5 でないと正しく動作しません。サーバーソフトウエア開発者に、ライブラリが古くなっていることを教えてあげてください。\n"
+                                                                +
+                                                                "\n" +
+                                                                "ASM 5 へのアップデート手順：\n" +
+                                                                "1. サーバーの {specialsourcefolder} フォルダーに移動します。\n" +
+                                                                "2. SpecialSource-1.7-SNAPSHOT.jar ファイルを削除します。\n" +
+                                                                "3. SpecialSource v1.7.4 を、次のURLからダウンロードします。https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
+                                                                +
+                                                                "4. ダウンロードしたjarファイルを、{specialsourcefolder} フォルダーにコピーします。\n"
+                                                                +
+                                                                "5. コピーしたファイルを、SpecialSource-1.7-SNAPSHOT.jar にリネームします。\n"
+                                                                +
+                                                                "6. サーバーを起動します。\n" +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.KO,
+                                                "\n" +
+                                                                "\n" +
+                                                                "DiscordSRV를 ASM 4에서 구동 중 입니다.. DiscordSRV는 ASM 5 이상 버전에서 작동합니다.\n"
+                                                                +
+                                                                "DiscordSRV는 ASM 5없이는 작동 할 수 없습니다. 구식 라이브러리를 써서 만든 서버 소프트웨어 개발자 한테 따지세요.\n"
+                                                                +
+                                                                "\n" +
+                                                                "ASM 5로 업데이트 하는 방법:\n" +
+                                                                "1. 서버의 {specialsourcefolder} 폴더로 들어갑니다.\n" +
+                                                                "2. SpecialSource-1.7-SNAPSHOT.jar 파일을 삭제 합니다.\n" +
+                                                                "3. SpecialSource v1.7.4를 https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar 에서 다운로드 받습니다.\n"
+                                                                +
+                                                                "4. {specialsourcefolder}로 3에서 다운로드 받은 파일을 복사합니다.\n" +
+                                                                "5. 4에서 복사한 파일의 이름을 SpecialSource-1.7-SNAPSHOT.jar로 바꿉니다.\n"
+                                                                +
+                                                                "6. 서버를 재부팅 합니다.\n" +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.NL,
+                                                "\n" +
+                                                                "\n" +
+                                                                "Je probeerd DiscordSRV te gebruiken op ASM 4. DiscordSRV heeft ASM 5 nodig om te functioneren.\n"
+                                                                +
+                                                                "DiscordSRV WERKT NIET zonder ASM 5. Geef je server software's developers de schuld maar voor het hebben van outdated libraries.\n"
+                                                                +
+                                                                "\n" +
+                                                                "Instructies voor het updaten naar ASM 5:\n" +
+                                                                "1. Ga naar de {specialsourcefolder} folder van je server.\n"
+                                                                +
+                                                                "2. Verwijder de SpecialSource-1.7-SNAPSHOT.jar jar file.\n"
+                                                                +
+                                                                "3. Download SpecialSource v1.7.4 vanaf https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
+                                                                +
+                                                                "4. Kopieer de jar file naar de {specialsourcefolder} folder van je server waar je mee bezig bent.\n"
+                                                                +
+                                                                "5. Verander de naam van de jar file die je hebt gekopieerd naar SpecialSource-1.7-SNAPSHOT.jar\n"
+                                                                +
+                                                                "6. Herstart je server.\n" +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.ES,
+                                                "\n" +
+                                                                "\n" +
+                                                                "Estás intentando usar DiscordSRV en ASM 4. DiscordSRV necesita ASM 5 para funcionar.\n"
+                                                                +
+                                                                "DiscordSRV NO FUNCIONARÁ sin ASM 5. Informe al desarrollador del software del servidor de que la biblioteca no está actualizada.\n"
+                                                                +
+                                                                "\n" +
+                                                                "Instrucciones para actualizar a ASM 5:\n" +
+                                                                "1. Navegue a la carpeta {specialsourcefolder} de tu servidor\n"
+                                                                +
+                                                                "2. Elimine el archivo jar de SpecialSource-1.7-SNAPSHOT.jar\n"
+                                                                +
+                                                                "3. Descargue SpecialSource v1.7.4 desde https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
+                                                                +
+                                                                "4. Copie el archivo jar en la carpeta {specialsourcefolder} del servidor al que navegaste anteriormente\n"
+                                                                +
+                                                                "5. Renombre el archivo jar que acaba de copiar a: SpecialSource-1.7-SNAPSHOT.jar\n"
+                                                                +
+                                                                "6. Reinicie el servidor\n" +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.RU,
+                                                "\n" +
+                                                                "\n" +
+                                                                "Вы пытаетесь использовать DiscordSRV на ASM 4. DiscordSRV требует ASM 5 для работы.\n"
+                                                                +
+                                                                "DiscordSRV НЕ БУДЕТ РАБОТАТЬ без ASM 5. Обратитесь к разработчикам вашей игровой платформы, чтобы получить необходимые библиотеки.\n"
+                                                                +
+                                                                "\n" +
+                                                                "Инструкции для обновления до ASM 5:\n" +
+                                                                "1. Найдите папку {specialsourcefolder} на вашем сервере\n"
+                                                                +
+                                                                "2. Удалите SpecialSource-1.7-SNAPSHOT.jar файл\n" +
+                                                                "3. Скачайте SpecialSource v1.7.4.jar отсюда https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
+                                                                +
+                                                                "4. Скопируйте jar файл в папку {specialsourcefolder} вашего сервера, которую вы открыли ранее\n"
+                                                                +
+                                                                "5. Переименуйте jar файл, который вы скопировали в SpecialSource-1.7-SNAPSHOT.jar\n"
+                                                                +
+                                                                "6. Перезапустите сервер\n" +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.ET,
+                                                "\n" +
+                                                                "\n" +
+                                                                "Sa proovid DiscordSRV'i kasutada ASM 4 peal. DiscordSRV nõuab töötamiseks ASM 5-te.\n"
+                                                                +
+                                                                "DiscordSRV EI TÖÖTA ilma ASM 5-ta. Süüdista oma serveritarkvara arendajaid vananenud teekide kasutamise eest.\n"
+                                                                +
+                                                                "\n" +
+                                                                "Juhised ASM 5-le täiendamiseks:\n" +
+                                                                "1. Mine serveris kausta {specialsourcefolder}\n" +
+                                                                "2. Kustuta fail SpecialSource-1.7-SNAPSHOT.jar\n" +
+                                                                "3. Laadi SpecialSource v1.7.4 alla saidilt https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
+                                                                +
+                                                                "4. Kopeeri saadud jar-fail eelnevalt avatud kausta {specialsourcefolder}\n"
+                                                                +
+                                                                "5. Nimeta just kopeeritud jar-fail ümber nimeks SpecialSource-1.7-SNAPSHOT.jar\n"
+                                                                +
+                                                                "6. Taaskäivita server\n" +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.ZH,
+                                                "\n" +
+                                                                "\n" +
+                                                                "您嘗試使用ASM 4來啟動DiscordSRV。 DiscordSRV需要ASM 5來啟動。\n" +
+                                                                "DiscordSRV無法在缺少ASM 5的情況下啟動。 請諮詢您的伺服器軟體開發人員關於舊版函式庫。\n" +
+                                                                "\n" +
+                                                                "ASM 5 升級指南:\n" +
+                                                                "1. 開啟伺服器中的 {specialsourcefolder} 資料夾\n" +
+                                                                "2. 刪除jar檔 SpecialSource-1.7-SNAPSHOT.jar \n" +
+                                                                "3. 下載 SpecialSource v1.7.4 從 https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
+                                                                +
+                                                                "4. 複製該jar檔至先前在伺服器中開啟的 {specialsourcefolder} 資料夾\n" +
+                                                                "5. 並將檔案重新命名為 SpecialSource-1.7-SNAPSHOT.jar\n" +
+                                                                "6. 重啟伺服器\n" +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.PL,
+                                                "\n" +
+                                                                "\n" +
+                                                                "Próbujesz użyć DiscordSRV na ASM 4. DiscordSRV wymaga ASM 5 do działania.\n"
+                                                                +
+                                                                "DiscordSRV NIE BĘDZIE DZIAŁAŁ bez ASM 5. wincie twórców oprogramowania serwera za posiadanie nieaktualnych bibliotek.\n"
+                                                                +
+                                                                "\n" +
+                                                                "Instrukcje dotyczące aktualizacji do ASM 5:\n" +
+                                                                "1. Przejdź do {specialsourcefolder} folder serwera\n" +
+                                                                "2. Usuń SpecialSource-1.7-SNAPSHOT.jar plik jar\n" +
+                                                                "3. Pobierz SpecialSource v1.7.4 z https://repo1.maven.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4.jar\n"
+                                                                +
+                                                                "4. Skopiuj plik jar do {specialsourcefolder} folderu serwera, do którego nawigowałeś wcześniej\n"
+                                                                +
+                                                                "5. Zmień nazwę właśnie skopiowanego pliku jar na SpecialSource-1.7-SNAPSHOT.jar\n"
+                                                                +
+                                                                "6. Zrestartuj serwer\n" +
+                                                                "\n" +
+                                                                "\n");
                         }
                 }), RESPECT_CHAT_PLUGINS_DISABLED(new HashMap<Language, String>() {
                         {
-                                put(Language.EN, "\n" + "\n"
-                                                + "RespectChatPlugins is disabled, this option is for TESTING PURPOSES ONLY\n"
-                                                + "and should NEVER be disabled on production servers.\n"
-                                                + "Disabling the option will cause cancelled messages to be forwarded to Discord\n"
-                                                + "including but not limited to private messages or staff chat messages without /commands\n"
-                                                + "\n" + "\n");
-                                put(Language.FR, "\n" + "\n"
-                                                + "RespectChatPlugins est désactivé, cette option est UNIQUEMENT À DES FINS DE TEST\n"
-                                                + "et ne doit JAMAIS être désactivé sur les serveurs de production.\n"
-                                                + "La désactivation de cette option entraînera le transfert des messages annulés vers Discord\n"
-                                                + "y compris, mais sans s'y limiter, les messages privés ou les messages de discussion du personnel sans commandes\n"
-                                                + "\n" + "\n");
-                                put(Language.DE, "\n" + "\n"
-                                                + "RespectChatPlugins ist deaktiviert. Diese Option dient nur zum Testen von Zwecken\n"
-                                                + "und sollte NIEMALS auf Produktionsservern deaktiviert werden.\n"
-                                                + "Durch Deaktivieren der Option werden abgebrochene Nachrichten an Discord weitergeleitet\n"
-                                                + "einschließlich, aber nicht beschränkt auf private Nachrichten oder Chat-Nachrichten von Mitarbeitern ohne / Befehle\n"
-                                                + "\n" + "\n");
-                                put(Language.JA, "\n" + "\n"
-                                                + "RespectChatPluginsは無効になっています。このオプションは、目的をテストするためだけのものです\n"
-                                                + "実稼働サーバーでは無効にしないでください。\n"
-                                                + "オプションを無効にすると、キャンセルされたメッセージがDiscordに転送されます\n"
-                                                + "/commandsを使用しないプライベートメッセージまたはスタッフチャットメッセージが含まれますが、これらに限定されません\n"
-                                                + "\n" + "\n");
-                                put(Language.KO, "\n" + "\n" + "RespectChatPlugins가 비활성화되었습니다.이 옵션은 테스트 목적으로 만 사용됩니다.\n"
-                                                + "프로덕션 서버에서는 절대 비활성화하지 않아야합니다.\n"
-                                                + "이 옵션을 비활성화하면 취소 된 메시지가 불일치로 전달됩니다.\n"
-                                                + "/command가없는 개인 메시지 또는 직원 채팅 메시지를 포함하지만 이에 국한되지는 않습니다.\n" + "\n"
-                                                + "\n");
-                                put(Language.NL, "\n" + "\n"
-                                                + "RespectChatPlugins is uitgeschakeld, deze optie is ALLEEN voor TESTEN VAN DOELEINDEN\n"
-                                                + "en mag NOOIT worden uitgeschakeld op productieservers.\n"
-                                                + "Als u deze optie uitschakelt, worden geannuleerde berichten doorgestuurd naar Discord\n"
-                                                + "inclusief maar niet beperkt tot privéberichten of chatberichten van personeel zonder / commando's\n"
-                                                + "\n" + "\n");
-                                put(Language.ES, "\n" + "\n"
-                                                + "RespectChatPlugins está deshabilitado, esta opción es SOLO PARA PROPÓSITOS\n"
-                                                + "y NUNCA debe deshabilitarse en los servidores de producción.\n"
-                                                + "Deshabilitar la opción hará que los mensajes cancelados se reenvíen a Discord\n"
-                                                + "incluidos, entre otros, mensajes privados o mensajes de chat del personal sin / comandos\n"
-                                                + "\n" + "\n");
-                                put(Language.RU, "\n" + "\n"
-                                                + "RespectChatPlugins отключен, эта опция ТОЛЬКО ДЛЯ ТЕСТИРОВАНИЯ\n"
-                                                + "и никогда не должен быть отключен на производственных серверах.\n"
-                                                + "Отключение этой опции приведет к тому, что отмененные сообщения будут отправлены в Discord\n"
-                                                + "включая, но не ограничиваясь, личные сообщения или сообщения чата персонала без / команд\n"
-                                                + "\n" + "\n");
-                                put(Language.ET, "\n" + "\n"
-                                                + "RespectChatPlugins on keelatud, see suvand on ette nähtud AINULT EESMÄRKIDE TESTIMISEKS\n"
-                                                + "ja seda ei tohiks KUNAGI tootmisserverites keelata.\n"
-                                                + "Selle valiku keelamisel edastatakse tühistatud kirjad Discordile\n"
-                                                + "sealhulgas, kuid mitte ainult, privaatsõnumid või personali vestlussõnumid ilma / käskudeta\n"
-                                                + "\n" + "\n");
-                                put(Language.ZH, "\n" + "\n" + "RespectChatPlugins已禁用，此选项仅用于测试目的\n"
-                                                + "并且永远不要在生产服务器上禁用它。\n" + "禁用该选项将导致取消的邮件转发到Discord\n"
-                                                + "包括但不限于不带/ command的私人消息或员工聊天消息\n" + "\n" + "\n");
-                                put(Language.PL, "\n" + "\n"
-                                                + "RespectChatPlugins jest wyłączone, ta opcja służy TYLKO DO CELÓW TESTOWYCH\n"
-                                                + "i NIGDY nie powinno być wyłączane na serwerach produkcyjnych.\n"
-                                                + "Wyłączenie tej opcji spowoduje, że anulowane wiadomości będą przekazywane do Discord\n"
-                                                + "w tym między innymi prywatne wiadomości lub wiadomości na czacie graczy bez /komend\n"
-                                                + "\n" + "\n");
+                                put(Language.EN,
+                                                "\n" +
+                                                                "\n" +
+                                                                "RespectChatPlugins is disabled, this option is for TESTING PURPOSES ONLY\n"
+                                                                +
+                                                                "and should NEVER be disabled on production servers.\n"
+                                                                +
+                                                                "Disabling the option will cause cancelled messages to be forwarded to Discord\n"
+                                                                +
+                                                                "including but not limited to private messages or staff chat messages without /commands\n"
+                                                                +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.FR,
+                                                "\n" +
+                                                                "\n" +
+                                                                "RespectChatPlugins est désactivé, cette option est UNIQUEMENT À DES FINS DE TEST\n"
+                                                                +
+                                                                "et ne doit JAMAIS être désactivé sur les serveurs de production.\n"
+                                                                +
+                                                                "La désactivation de cette option entraînera le transfert des messages annulés vers Discord\n"
+                                                                +
+                                                                "y compris, mais sans s'y limiter, les messages privés ou les messages de discussion du personnel sans commandes\n"
+                                                                +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.DE,
+                                                "\n" +
+                                                                "\n" +
+                                                                "RespectChatPlugins ist deaktiviert. Diese Option dient nur zum Testen von Zwecken\n"
+                                                                +
+                                                                "und sollte NIEMALS auf Produktionsservern deaktiviert werden.\n"
+                                                                +
+                                                                "Durch Deaktivieren der Option werden abgebrochene Nachrichten an Discord weitergeleitet\n"
+                                                                +
+                                                                "einschließlich, aber nicht beschränkt auf private Nachrichten oder Chat-Nachrichten von Mitarbeitern ohne / Befehle\n"
+                                                                +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.JA,
+                                                "\n" +
+                                                                "\n" +
+                                                                "RespectChatPluginsは無効になっています。このオプションは、目的をテストするためだけのものです\n"
+                                                                +
+                                                                "実稼働サーバーでは無効にしないでください。\n" +
+                                                                "オプションを無効にすると、キャンセルされたメッセージがDiscordに転送されます\n" +
+                                                                "/commandsを使用しないプライベートメッセージまたはスタッフチャットメッセージが含まれますが、これらに限定されません\n"
+                                                                +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.KO,
+                                                "\n" +
+                                                                "\n" +
+                                                                "RespectChatPlugins가 비활성화되었습니다.이 옵션은 테스트 목적으로 만 사용됩니다.\n"
+                                                                +
+                                                                "프로덕션 서버에서는 절대 비활성화하지 않아야합니다.\n" +
+                                                                "이 옵션을 비활성화하면 취소 된 메시지가 불일치로 전달됩니다.\n" +
+                                                                "/command가없는 개인 메시지 또는 직원 채팅 메시지를 포함하지만 이에 국한되지는 않습니다.\n"
+                                                                +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.NL,
+                                                "\n" +
+                                                                "\n" +
+                                                                "RespectChatPlugins is uitgeschakeld, deze optie is ALLEEN voor TESTEN VAN DOELEINDEN\n"
+                                                                +
+                                                                "en mag NOOIT worden uitgeschakeld op productieservers.\n"
+                                                                +
+                                                                "Als u deze optie uitschakelt, worden geannuleerde berichten doorgestuurd naar Discord\n"
+                                                                +
+                                                                "inclusief maar niet beperkt tot privéberichten of chatberichten van personeel zonder / commando's\n"
+                                                                +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.ES,
+                                                "\n" +
+                                                                "\n" +
+                                                                "RespectChatPlugins está deshabilitado, esta opción es SOLO PARA PROPÓSITOS\n"
+                                                                +
+                                                                "y NUNCA debe deshabilitarse en los servidores de producción.\n"
+                                                                +
+                                                                "Deshabilitar la opción hará que los mensajes cancelados se reenvíen a Discord\n"
+                                                                +
+                                                                "incluidos, entre otros, mensajes privados o mensajes de chat del personal sin / comandos\n"
+                                                                +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.RU,
+                                                "\n" +
+                                                                "\n" +
+                                                                "RespectChatPlugins отключен, эта опция ТОЛЬКО ДЛЯ ТЕСТИРОВАНИЯ\n"
+                                                                +
+                                                                "и никогда не должен быть отключен на производственных серверах.\n"
+                                                                +
+                                                                "Отключение этой опции приведет к тому, что отмененные сообщения будут отправлены в Discord\n"
+                                                                +
+                                                                "включая, но не ограничиваясь, личные сообщения или сообщения чата персонала без / команд\n"
+                                                                +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.ET,
+                                                "\n" +
+                                                                "\n" +
+                                                                "RespectChatPlugins on keelatud, see suvand on ette nähtud AINULT EESMÄRKIDE TESTIMISEKS\n"
+                                                                +
+                                                                "ja seda ei tohiks KUNAGI tootmisserverites keelata.\n"
+                                                                +
+                                                                "Selle valiku keelamisel edastatakse tühistatud kirjad Discordile\n"
+                                                                +
+                                                                "sealhulgas, kuid mitte ainult, privaatsõnumid või personali vestlussõnumid ilma / käskudeta\n"
+                                                                +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.ZH,
+                                                "\n" +
+                                                                "\n" +
+                                                                "RespectChatPlugins已禁用，此选项仅用于测试目的\n" +
+                                                                "并且永远不要在生产服务器上禁用它。\n" +
+                                                                "禁用该选项将导致取消的邮件转发到Discord\n" +
+                                                                "包括但不限于不带/ command的私人消息或员工聊天消息\n" +
+                                                                "\n" +
+                                                                "\n");
+                                put(Language.PL,
+                                                "\n" +
+                                                                "\n" +
+                                                                "RespectChatPlugins jest wyłączone, ta opcja służy TYLKO DO CELÓW TESTOWYCH\n"
+                                                                +
+                                                                "i NIGDY nie powinno być wyłączane na serwerach produkcyjnych.\n"
+                                                                +
+                                                                "Wyłączenie tej opcji spowoduje, że anulowane wiadomości będą przekazywane do Discord\n"
+                                                                +
+                                                                "w tym między innymi prywatne wiadomości lub wiadomości na czacie graczy bez /komend\n"
+                                                                +
+                                                                "\n" +
+                                                                "\n");
+                        }
+                }), INCOMPATIBLE_CLIENT(new HashMap<Language, String>() {
+                        {
+                                put(Language.EN, "Your user experience is degraded due to using {client}, some commands may not work as expected.");
+                                put(Language.FR, "Votre expérience utilisateur est dégradée en raison de l'utilisation de {client}, certaines commandes peuvent ne pas fonctionner comme prévu.");
+                                put(Language.DE, "Ihre Benutzererfahrung ist durch die Verwendung von {client} beeinträchtigt. Einige Befehle funktionieren möglicherweise nicht wie erwartet.");
+                                put(Language.JA, "{client}を使用しているため、ユーザーエクスペリエンスが低下し、一部のコマンドが期待どおりに機能しない場合があります。 ");
+                                put(Language.KO, "{client} 사용으로 인해 사용자 경험이 저하되고 일부 명령이 예상대로 작동하지 않을 수 있습니다.");
+                                put(Language.NL, "Uw gebruikerservaring is verslechterd door het gebruik van {client}. Sommige opdrachten werken mogelijk niet zoals verwacht.");
+                                put(Language.ES, "Su experiencia de usuario se degrada debido al uso de {cliente}, es posible que algunos comandos no funcionen como se esperaba.");
+                                put(Language.RU, "Ваше взаимодействие с пользователем ухудшается из-за использования {client}, некоторые команды могут работать не так, как ожидалось.");
+                                put(Language.ET, "Teie kasutuskogemus on {client} kasutamise tõttu halvenenud, mõned käsud ei pruugi ootuspäraselt töötada.");
+                                put(Language.ZH, "您的用户体验因使用 {client} 而下降，某些命令可能无法按预期工作。");
+                                put(Language.PL, "Twoje doświadczenie użytkownika jest pogorszone z powodu korzystania z {client}, niektóre polecenia mogą nie działać zgodnie z oczekiwaniami.");
                         }
                 }), CONSOLE_FORWARDING_ASSIGNED_TO_CHANNEL(new HashMap<Language, String>() {
                         {
@@ -330,20 +534,6 @@ public class LangUtil {
                                 put(Language.ET, "API listener {listenername} kuulamine lõpetatud");
                                 put(Language.ZH, "API listener {listenername} 已取消訂閱");
                                 put(Language.PL, "Odbiornik API {listenername} odbubskrybowano");
-                        }
-                }), API_LISTENER_THREW_ERROR(new HashMap<Language, String>() {
-                        {
-                                put(Language.EN, "DiscordSRV API Listener {listenername} threw an error");
-                                put(Language.FR, "DiscordSRV API Listener {listenername} a causé une erreur");
-                                put(Language.DE, "DiscordSRV API Listener {listenername} erzeugte einen Fehler");
-                                put(Language.JA, "DiscordSRV API Listener {listenername} でエラーが発生しました");
-                                put(Language.KO, "DiscordSRV API Listener {listenername} 에서 오류가 발생하였습니다.");
-                                put(Language.NL, "DiscordSRV API Listener {listenername} heeft een error");
-                                put(Language.ES, "DiscordSRV API Listener {listenername} lanzó un error");
-                                put(Language.RU, "DiscordSRV API Listener {listenername} сгенерировал ошибку");
-                                put(Language.ET, "DiscordSRV API Listener {listenername} tagastas veateate");
-                                put(Language.ZH, "DiscordSRV API Listener {listenername} 發生錯誤");
-                                put(Language.PL, "Odbiornik DiscordSRV API {listenername} wykrył błąd");
                         }
                 }), API_LISTENER_METHOD_NOT_ACCESSIBLE(new HashMap<Language, String>() {
                         {
@@ -707,9 +897,9 @@ public class LangUtil {
                 CHAT_TO_MINECRAFT_NO_ROLE("DiscordToMinecraftChatMessageFormatNoRole", true),
                 CHAT_TO_MINECRAFT_REPLY("DiscordToMinecraftMessageReplyFormat", true),
                 CODE_GENERATED("CodeGenerated", false), // colors
-                                                        // translated
-                                                        // with
-                                                        // kyori
+                // translated
+                // with
+                // kyori
                 CLICK_TO_COPY_CODE("ClickToCopyCode", false), // colors translated with kyori
                 COMMAND_DOESNT_EXIST("UnknownCommandMessage", true),
                 CONSOLE_CHANNEL_LINE("DiscordConsoleChannelFormat", false),
