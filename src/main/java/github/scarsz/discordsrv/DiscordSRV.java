@@ -1017,12 +1017,20 @@ public class DiscordSRV extends JavaPlugin {
                     // we disable anything that isn't enabled (everything is enabled by default)
                     .disableCache(Arrays.stream(CacheFlag.values())
                             .filter(cacheFlag -> !api.getCacheFlags().contains(cacheFlag)).collect(Collectors.toList()))
-                    .setMemberCachePolicy(MemberCachePolicy.ALL).setCallbackPool(callbackThreadPool, false)
-                    .setGatewayPool(gatewayThreadPool, true).setRateLimitPool(rateLimitThreadPool, true)
-                    .setWebsocketFactory(new WebSocketFactory().setDualStackMode(DualStackMode.IPV4_ONLY))
-                    .setHttpClient(httpClient).setAutoReconnect(true).setBulkDeleteSplittingEnabled(false)
-                    .setToken(token).addEventListeners(new DiscordBanListener())
-                    .addEventListeners(new DiscordChatListener()).addEventListeners(new DiscordConsoleListener())
+                    .setMemberCachePolicy(MemberCachePolicy.ALL)
+                    .setCallbackPool(callbackThreadPool, false)
+                    .setGatewayPool(gatewayThreadPool, true)
+                    .setRateLimitPool(rateLimitThreadPool, true)
+                    .setWebsocketFactory(new WebSocketFactory()
+                            .setDualStackMode(DualStackMode.IPV4_ONLY))
+                    .setHttpClient(httpClient)
+                    .setAutoReconnect(true)
+                    .setBulkDeleteSplittingEnabled(false)
+                    .setEnableShutdownHook(false)
+                    .setToken(token)
+                    .addEventListeners(new DiscordBanListener())
+                    .addEventListeners(new DiscordChatListener())
+                    .addEventListeners(new DiscordConsoleListener())
                     .addEventListeners(new DiscordAccountLinkListener())
                     .addEventListeners(new DiscordDisconnectListener()).addEventListeners(groupSynchronizationManager)
                     .setContextEnabled(false).build();
@@ -1107,9 +1115,21 @@ public class DiscordSRV extends JavaPlugin {
                 return textChannel != null && textChannel.getGuild().getSelfMember().hasPermission(textChannel,
                         Permission.MESSAGE_READ, Permission.MESSAGE_WRITE) ? textChannel : null;
             }, config -> {
-                config.setLoggerNamePadding(config().getInt("DiscordConsoleChannelPadding"));
-                config.setLogLevels(EnumSet.copyOf(config().getStringList("DiscordConsoleChannelLevels").stream()
-                        .map(String::toUpperCase).map(LogLevel::valueOf).collect(Collectors.toSet())));
+                config.setUseCodeBlocks(config().getBooleanElse("DiscordConsoleChannelUseCodeBlocks", true));
+                config.setLoggerNamePadding(config().getIntElse("DiscordConsoleChannelPadding", 0));
+                Set<LogLevel> configuredLevels = config().getStringList("DiscordConsoleChannelLevels").stream()
+                        .map(String::toUpperCase).map(s -> {
+                            try {
+                                return LogLevel.valueOf(s);
+                            } catch (IllegalArgumentException e) {
+                                DiscordSRV.error("Invalid console logging level '" + s + "', valid options are "
+                                        + Arrays.stream(LogLevel.values()).map(LogLevel::name)
+                                                .collect(Collectors.joining(", ")));
+                                return null;
+                            }
+                        }).filter(Objects::nonNull).collect(Collectors.toSet());
+                config.setLogLevels(!configuredLevels.isEmpty() ? EnumSet.copyOf(configuredLevels)
+                        : EnumSet.noneOf(LogLevel.class));
                 config.mapLoggerName("net.minecraft.server.MinecraftServer", "Server");
                 config.mapLoggerNameFriendly("net.minecraft.server", s -> "Server/" + s);
                 config.mapLoggerNameFriendly("net.minecraft", s -> "Minecraft/" + s);
@@ -1772,7 +1792,7 @@ public class DiscordSRV extends JavaPlugin {
         }
 
         // return if mcMMO is enabled and message is from party or admin chat
-        if (PluginUtil.pluginHookIsEnabled("mcMMO", false)) {
+        if (PluginUtil.pluginHookIsEnabled("mcMMO")) {
             if (player.hasMetadata("mcMMO: Player Data")) {
                 boolean usingAdminChat = com.gmail.nossr50.api.ChatAPI.isUsingAdminChat(player);
                 boolean usingPartyChat = com.gmail.nossr50.api.ChatAPI.isUsingPartyChat(player);
