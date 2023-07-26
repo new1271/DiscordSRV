@@ -4,7 +4,7 @@
 # issues on our Discord. https://discordsrv.com/discord
 #
 
-# Whether or not to enable the voice module
+# Whether to enable the voice module
 # Sie müssen Ihren Server neu starten, nachdem Sie diese Option geändert haben
 Voice enabled: false
 # Amount of ticks between network updates
@@ -26,5 +26,6 @@ Network:
   # Once a player has joined a network, they can be
   # strength + falloff blocks away before being disconnected
   Falloff: 5
-  # Whether or not to allow VAD in voice channels
-  Allow voice activation detection: true
+  # Whether voice network channels are visible to everyone, even those not connected
+  # Helps let players know if people are actually using the voice network at the moment
+  Channels are visible: false

@@ -1,9 +1,8 @@
-/*-
- * LICENSE
- * DiscordSRV
- * -------------
- * Copyright (C) 2016 - 2021 Austin "Scarsz" Shapiro
- * -------------
+/*
+ * DiscordSRV - https://github.com/DiscordSRV/DiscordSRV
+ *
+ * Copyright (C) 2016 - 2022 Austin "Scarsz" Shapiro
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -17,7 +16,6 @@
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
- * END
  */
 
 package github.scarsz.discordsrv.hooks.chat;
@@ -34,6 +32,7 @@ import mineverse.Aust1n46.chat.api.events.VentureChatEvent;
 import mineverse.Aust1n46.chat.channel.ChatChannel;
 import mineverse.Aust1n46.chat.utilities.Format;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +44,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -87,7 +87,7 @@ public class VentureChatHook implements ChatHook {
             Player player = chatPlayer.getPlayer();
             if (player != null) {
                 // these events are never cancelled
-                DiscordSRV.getPlugin().processChatMessage(player, message, chatChannel.getName(), false);
+                DiscordSRV.getPlugin().processChatMessage(player, message, chatChannel.getName(), false, event);
                 return;
             }
         }
@@ -206,10 +206,10 @@ public class VentureChatHook implements ChatHook {
             OfflinePlayer offlinePlayer = uuid != null ? Bukkit.getOfflinePlayer(uuid) : null;
             if (offlinePlayer != null) {
                 String name = chatPlayer.getNickname() != null ? chatPlayer.getNickname() : chatPlayer.getName();
-                WebhookUtil.deliverMessage(destinationChannel, offlinePlayer, name, message, null);
+                WebhookUtil.deliverMessage(destinationChannel, offlinePlayer, name, message, (Collection<? extends MessageEmbed>) null);
             } else {
                 //noinspection ConstantConditions
-                WebhookUtil.deliverMessage(destinationChannel, webhookUsername, DiscordSRV.getAvatarUrl(username, uuid), message, null);
+                WebhookUtil.deliverMessage(destinationChannel, webhookUsername, DiscordSRV.getAvatarUrl(username, uuid), message, (Collection<? extends MessageEmbed>) null);
             }
         }
     }

@@ -1,29 +1,28 @@
-/*-
- * LICENSE
- * DiscordSRV
- * -------------
- * Copyright (C) 2016 - 2021 Austin "Scarsz" Shapiro
- * -------------
+/*
+ * DiscordSRV - https://github.com/DiscordSRV/DiscordSRV
+ *
+ * Copyright (C) 2016 - 2022 Austin "Scarsz" Shapiro
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
- * END
  */
 
 package github.scarsz.discordsrv.objects.log4j;
 
 import github.scarsz.discordsrv.Debug;
 import github.scarsz.discordsrv.DiscordSRV;
+import net.dv8tion.jda.api.JDA;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
@@ -53,6 +52,15 @@ public class JdaFilter implements Filter {
                     DiscordSRV.error("[JDA] " + message + ". This is either a issue on Discord's end (https://discordstatus.com) or with your server's connection");
                     DiscordSRV.debug(ExceptionUtils.getStackTrace(throwable));
                     break;
+                }
+
+                // JDA forcefully logs this :(
+                JDA jda = DiscordSRV.getPlugin().getJda();
+                if (message.contains("There was an I/O error while executing a REST request: null")
+                        && jda != null && (jda.getStatus() == JDA.Status.SHUTDOWN || jda.getStatus() == JDA.Status.SHUTTING_DOWN)) {
+                    // Ignore InterruptedIOException's during shutdown, we can't hold up the server from stopping forever,
+                    // so some requests are cancelled during shutdown. Logging errors for those request failures isn't important.
+                    return Result.DENY;
                 }
 
                 if (throwable != null) {
